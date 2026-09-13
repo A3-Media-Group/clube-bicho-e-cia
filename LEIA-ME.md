@@ -54,3 +54,9 @@ As fotografias usam a licença Pexels. Consulte `creditos.html`; não use imagen
 ## Verificações
 
 A navegação local, referências de arquivos, sintaxe JavaScript e resultados das ferramentas foram conferidos. A publicação e o workflow precisam ser executados na sua conta GitHub; não foram realizados nesta entrega. O domínio, Search Console e AdSense dependem dos seus dados reais.
+
+## Versão corrigida — estilos incorporados
+
+Os estilos e o JavaScript estão incorporados em cada HTML para evitar que arquivos antigos chamados assets/style.css ou assets/app.js alterem a apresentação. Os arquivos externos permanecem como referência para edição, mas alterá-los sozinho não atualiza as páginas: edite também os blocos incorporados.
+
+Extraia o novo ZIP em uma pasta vazia e abra index.html de dentro dela. No GitHub, substitua todos os HTML antigos pelos novos e preserve a pasta assets com as fotos. Aguarde a publicação terminar e recarregue com Ctrl+F5. Não misture arquivos de versões diferentes.
