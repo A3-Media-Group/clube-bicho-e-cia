@@ -1,6 +1,8 @@
 // Dados da página sobre.html. O layout comum está em src/layout.mjs.
 export default {
-  file: "sobre.html",
+  id: "sobre",
+  path: "/sobre.html",
+  updated: "2026-09-13",
   title: "Sobre o clube e nossas fontes | Clube Bicho e Cia",
   description: "Conheça a política editorial, as referências brasileiras e internacionais e os critérios das ferramentas.",
   ogTitle: "Sobre o clube e nossas fontes",

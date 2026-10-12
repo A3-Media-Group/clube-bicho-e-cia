@@ -1,6 +1,8 @@
 // Dados da página privacidade.html. O layout comum está em src/layout.mjs.
 export default {
-  file: "privacidade.html",
+  id: "privacidade",
+  path: "/privacidade.html",
+  updated: "2026-09-13",
   title: "Privacidade | Clube Bicho e Cia",
   description: "Saiba como as ferramentas tratam os dados informados.",
   ogTitle: "Privacidade",

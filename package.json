@@ -5,6 +5,10 @@
   "engines": { "node": ">=22" },
   "scripts": {
     "build": "node build.mjs",
-    "audit": "node scripts/audit.mjs"
+    "start": "node scripts/serve.mjs",
+    "audit": "node scripts/audit.mjs",
+    "og": "node scripts/og.mjs && node build.mjs",
+    "icones": "node scripts/icones.mjs",
+    "imagens": "sh scripts/imagens.sh"
   }
 }

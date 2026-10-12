@@ -1,6 +1,8 @@
 // Dados da página termos.html. O layout comum está em src/layout.mjs.
 export default {
-  file: "termos.html",
+  id: "termos",
+  path: "/termos.html",
+  updated: "2026-09-13",
   title: "Termos de uso | Clube Bicho e Cia",
   description: "Condições de uso do conteúdo educativo e das ferramentas.",
   ogTitle: "Termos de uso",

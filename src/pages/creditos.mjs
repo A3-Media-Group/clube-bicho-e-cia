@@ -1,6 +1,8 @@
 // Dados da página creditos.html. O layout comum está em src/layout.mjs.
 export default {
-  file: "creditos.html",
+  id: "creditos",
+  path: "/creditos.html",
+  updated: "2026-09-13",
   title: "Créditos das fotos | Clube Bicho e Cia",
   description: "Fotografias reais utilizadas no Clube Bicho e Cia e suas licenças.",
   ogTitle: "Créditos das fotos",
