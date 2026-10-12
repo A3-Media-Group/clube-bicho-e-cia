@@ -37,4 +37,8 @@ for (const p of pages) {
   await page.screenshot({ path: path.join(ROOT, ogImagePath(p)), type: 'jpeg', quality: 82 });
 }
 await browser.close();
+if (!only.length) {
+  const ids = new Set(pages.map(p => `${p.id}.jpg`));
+  for (const f of fs.readdirSync(path.join(ROOT, 'assets/og'))) if (!ids.has(f)) fs.unlinkSync(path.join(ROOT, 'assets/og', f));
+}
 console.log(`og: ${pages.length} imagens em assets/og/`);

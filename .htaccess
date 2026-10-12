@@ -12,7 +12,21 @@ RewriteRule ^(build\.mjs|package(-lock)?\.json|README\.md|LEIA-ME\.md)$ - [R=404
 RewriteRule (^|/)\. - [R=404,L]
 
 # URLs antigas → novas (301 direto para https sem www, sem cadeia).
-# (nenhuma)
+RewriteRule ^idade\.html$ https://clubebichoecia.com.br/ferramentas/idade-do-pet-em-anos-humanos/ [R=301,L]
+RewriteRule ^racao\.html$ https://clubebichoecia.com.br/ferramentas/calculadora-de-racao-para-caes-e-gatos/ [R=301,L]
+RewriteRule ^alimentos\.html$ https://clubebichoecia.com.br/ferramentas/alimentos-proibidos-para-caes-e-gatos/ [R=301,L]
+RewriteRule ^gastos\.html$ https://clubebichoecia.com.br/ferramentas/custo-mensal-do-pet/ [R=301,L]
+RewriteRule ^agenda\.html$ https://clubebichoecia.com.br/ferramentas/agenda-de-cuidados-do-pet/ [R=301,L]
+RewriteRule ^nomes\.html$ https://clubebichoecia.com.br/ferramentas/nomes-para-cachorro-e-gato/ [R=301,L]
+RewriteRule ^vacinacao-antirrabica\.html$ https://clubebichoecia.com.br/guias/vacina-antirrabica-para-caes-e-gatos/ [R=301,L]
+RewriteRule ^alimentacao-e-porcoes\.html$ https://clubebichoecia.com.br/guias/quanto-de-racao-dar-ao-cachorro-e-ao-gato/ [R=301,L]
+RewriteRule ^alimentos-perigosos\.html$ https://clubebichoecia.com.br/guias/alimentos-perigosos-para-caes-e-gatos/ [R=301,L]
+RewriteRule ^peso-e-condicao-corporal\.html$ https://clubebichoecia.com.br/guias/peso-ideal-e-condicao-corporal-do-cachorro/ [R=301,L]
+RewriteRule ^idade-caes-gatos\.html$ https://clubebichoecia.com.br/guias/idade-de-cachorro-e-gato-em-anos-humanos/ [R=301,L]
+RewriteRule ^sobre\.html$ https://clubebichoecia.com.br/sobre/ [R=301,L]
+RewriteRule ^privacidade\.html$ https://clubebichoecia.com.br/privacidade/ [R=301,L]
+RewriteRule ^termos\.html$ https://clubebichoecia.com.br/termos/ [R=301,L]
+RewriteRule ^creditos\.html$ https://clubebichoecia.com.br/creditos/ [R=301,L]
 
 # http → https e www → sem www (301).
 RewriteCond %{HTTPS} off [OR]

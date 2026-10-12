@@ -38,20 +38,22 @@ export function parsePage(root, file) {
   const body = mainM ? mainM[1] : (html.match(/<body\b[^>]*>([\s\S]*)<\/body>/) || [, ''])[1];
   const h1s = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)].map(m => text(m[1]));
   const canonicalTag = (html.match(/<link\b[^>]*rel="canonical"[^>]*>/) || [null])[0];
-  const links = [];
-  for (const m of html.matchAll(/<a\b[^>]*>/g)) {
-    const href = attr(m[0], 'href');
-    if (href) links.push(href);
-  }
-  const internal = new Set();
+  const hrefs = fragment => [...fragment.matchAll(/<a\b[^>]*>/g)].map(m => attr(m[0], 'href')).filter(Boolean);
   const rawInternal = [];
-  for (const href of links) {
-    if (/^(mailto:|tel:|javascript:|data:)/.test(href)) continue;
-    const u = new URL(href, 'https://site.local' + urlPath);
-    if (u.host !== 'site.local') continue;
-    rawInternal.push(href);
-    if (u.pathname !== urlPath) internal.add(u.pathname);
-  }
+  const resolve = (list, keepRaw) => {
+    const set = new Set();
+    for (const href of list) {
+      if (/^(mailto:|tel:|javascript:|data:)/.test(href)) continue;
+      const u = new URL(href, 'https://site.local' + urlPath);
+      if (u.host !== 'site.local') continue;
+      if (keepRaw) rawInternal.push(href);
+      if (u.pathname !== urlPath) set.add(u.pathname);
+    }
+    return [...set];
+  };
+  const internal = resolve(hrefs(html), true);
+  // Links contextuais: dentro de <main>, sem o breadcrumb.
+  const contextual = resolve(hrefs(body.replace(/<nav class="breadcrumb[\s\S]*?<\/nav>/, '')), false);
   const images = [...html.matchAll(/<img\b[^>]*>/g)].map(m => ({ src: attr(m[0], 'src'), alt: attr(m[0], 'alt'), srcset: attr(m[0], 'srcset') }));
   const jsonLd = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(m => m[1]);
   return {
@@ -63,19 +65,18 @@ export function parsePage(root, file) {
     ogUrl: meta(html, 'property', 'og:url'),
     canonical: canonicalTag ? attr(canonicalTag, 'href') : null,
     h1s, words: text(body).split(' ').filter(w => /[\p{L}\p{N}]/u.test(w)).length,
-    rawInternal, outbound: [...internal], images, jsonLd
+    rawInternal, outbound: internal, contextual, images, jsonLd
   };
 }
 
 export function loadSite(root) {
   const pages = listHtml(root).map(f => parsePage(root, f));
   const byPath = new Map(pages.map(p => [p.urlPath, p]));
-  for (const p of pages) p.inbound = new Set();
+  for (const p of pages) { p.inbound = new Set(); p.contextualInbound = new Set(); }
   for (const p of pages) {
-    for (const target of p.outbound) {
-      const t = byPath.get(target);
-      if (t && p.urlPath !== '/') t.inbound.add(p.urlPath);
-    }
+    if (p.urlPath === '/') continue;
+    for (const target of p.outbound) byPath.get(target)?.inbound.add(p.urlPath);
+    for (const target of p.contextual) byPath.get(target)?.contextualInbound.add(p.urlPath);
   }
   return { pages, byPath };
 }
