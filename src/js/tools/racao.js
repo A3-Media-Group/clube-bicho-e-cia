@@ -1,9 +1,17 @@
-import { output, onSubmit } from '../lib/ui.js';
+import { setupTool, fmt } from '../lib/ui.js';
+import { parseDecimal } from '../calc/numero.mjs';
+import { dailyPortion } from '../calc/racao.mjs';
 
-onSubmit((data, result) => {
-  const n = k => Number(data.get(k));
-  const rer = 70 * Math.pow(n('weight'), .75);
-  const factors = data.get('species') === 'dog' ? [1.4, 1.6] : [1.2, 1.4];
-  const values = factors.map(f => rer * f);
-  output(result, Math.round(values[0] / n('density') * 1000) + '–' + Math.round(values[1] / n('density') * 1000) + ' g/dia (estimativa)', Math.round(values[0]) + '–' + Math.round(values[1]) + ' kcal/dia. Não é uma prescrição. Confirme com o veterinário e considere os petiscos no total diário.');
+setupTool({
+  tool: 'racao',
+  compute(data) {
+    const species = data.get('especie') === 'gato' ? 'cat' : 'dog';
+    const r = dailyPortion({ species, weightKg: parseDecimal(data.get('peso')), kcalPerKg: parseDecimal(data.get('kcal')) });
+    const title = `${fmt(r.gramsMin)} a ${fmt(r.gramsMax)} g de ração por dia`;
+    const lines = [
+      `Energia estimada: ${fmt(r.kcalMin)} a ${fmt(r.kcalMax)} kcal por dia (RER de ${fmt(r.rer)} kcal × ${fmt(r.factors[0], 1)} a ${fmt(r.factors[1], 1)}).`,
+      'Petiscos entram nesse total. Estimativa para adulto saudável e castrado, não é prescrição: confirme com o médico-veterinário e acompanhe o peso e a condição corporal.'
+    ];
+    return { title, lines, copy: `${title}. ${lines.join(' ')}` };
+  }
 });

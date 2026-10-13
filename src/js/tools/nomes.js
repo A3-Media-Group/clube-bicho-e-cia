@@ -1,10 +1,20 @@
-import { output, onSubmit } from '../lib/ui.js';
+import { setupTool } from '../lib/ui.js';
+import { filterNames, pickNames } from '../calc/nomes.mjs';
 
-const names = { fofos: ['Pipoca', 'Nina', 'Tico', 'Luna', 'Bento', 'Amora', 'Lili', 'Chico', 'Mel', 'Nino', 'Cacau', 'Belinha'], comida: ['Paçoca', 'Cookie', 'Mochi', 'Jujuba', 'Pudim', 'Canela', 'Waffle', 'Farofa', 'Quindim', 'Caju', 'Pimenta', 'Avelã'], natureza: ['Sol', 'Lua', 'Jade', 'Flora', 'Rio', 'Gaia', 'Nuvem', 'Brisa', 'Lótus', 'Íris', 'Aurora', 'Céu'], divertidos: ['Pixel', 'Ziggy', 'Zeca', 'Pingo', 'Yoda', 'Jazz', 'Tetris', 'Bowie', 'Fubá', 'Sushi', 'Zuzu', 'Chulé'] };
-let nameRound = 0;
+const form = document.querySelector('form[data-tool="nomes"]');
+const porteField = form?.querySelector('[data-porte]');
+const syncPorte = () => { if (porteField) porteField.hidden = form.elements.especie.value === 'gato'; };
+form?.elements.especie.addEventListener('change', syncPorte);
+syncPorte();
 
-onSubmit((data, result) => {
-  const list = names[data.get('style')];
-  const start = (nameRound++ % 3) * 4;
-  output(result, list.slice(start, start + 4).join(' • '), 'Gostou de algum? Clique novamente para ver mais quatro sugestões.');
+setupTool({
+  tool: 'nomes',
+  compute(data) {
+    const especie = data.get('especie') || '';
+    const filters = { especie, sexo: data.get('sexo') || '', estilo: data.get('estilo') || '', porte: especie === 'gato' ? '' : data.get('porte') || '' };
+    const list = filterNames(filters);
+    if (!list.length) return { title: 'Nenhum nome com essa combinação', lines: ['Tente outro estilo ou deixe algum filtro em “qualquer”.'], copy: '' };
+    const names = pickNames(list, 6).map(n => n.nome);
+    return { title: names.join(' • '), lines: [`Sorteados entre ${list.length} nomes com esses filtros. Clique de novo para ver outros.`], copy: names.join(', ') };
+  }
 });
