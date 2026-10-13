@@ -1,5 +1,6 @@
 // Ferramenta: nomes para cachorro e gato.
 import { toolPage } from '../../templates.mjs';
+import { byId } from '../../site.mjs';
 import { FORMS } from '../../forms.mjs';
 import { filterNames, ESTILOS } from '../../js/calc/nomes.mjs';
 
@@ -17,7 +18,7 @@ export default toolPage({
   sections: [
     { h2: 'Como o gerador escolhe os nomes', html: `<p>Os ${total} nomes foram selecionados pela redação e marcados por espécie, sexo, estilo (${Object.values(ESTILOS).map(e => e.toLowerCase()).join(', ')}) e, em alguns casos, porte do cão. O gerador filtra a lista com as opções escolhidas e sorteia seis nomes; cada clique sorteia de novo.</p><p>Não é um ranking de popularidade: não temos dados de registro de nomes de pets no Brasil.</p>` },
     { h2: 'Exemplo: cadela de porte grande', html: '<p>Escolhendo cachorro, fêmea e porte grande, o sorteio usa nomes marcados como grandes ou sem porte definido, como Atena, Freya, Xena ou Luna. Se quiser só nomes de comida, troque o estilo para “Comidinhas”.</p>' },
-    { h2: 'Dicas para escolher o nome', html: '<ul><li><strong>Prefira nomes curtos</strong>, de duas sílabas, que o animal reconhece com mais facilidade.</li><li><strong>Evite nomes parecidos com comandos</strong> que você vai usar, como “não” ou “senta”.</li><li><strong>Teste em voz alta</strong> e veja se toda a família consegue chamar do mesmo jeito.</li><li><strong>Combine com a coleira de identificação</strong>: nome e telefone ajudam se o pet se perder.</li></ul>' }
+    { h2: 'Dicas para escolher o nome', html: `<ul><li><strong>Prefira nomes curtos</strong>, de duas sílabas, que o animal reconhece com mais facilidade.</li><li><strong>Evite nomes parecidos com comandos</strong> que você vai usar, como “não” ou “senta”.</li><li><strong>Teste em voz alta</strong> e veja se toda a família consegue chamar do mesmo jeito.</li><li><strong>Combine com a coleira de identificação</strong>: nome e telefone ajudam se o pet se perder.</li></ul><p>Chegou um filhote? Registre a primeira consulta na <a href="${byId('agenda').path}">agenda de cuidados</a> e descubra a fase de vida dele com a <a href="${byId('idade').path}">calculadora de idade do pet</a>.</p>` }
   ],
   faqTitle: 'Perguntas frequentes sobre nomes de pets',
   faq: [

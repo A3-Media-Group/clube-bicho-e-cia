@@ -22,15 +22,16 @@ export function reviewNote({ reviewer, reviewed }) {
     : '<p class="review-note">Conteúdo educativo produzido pela redação a partir das fontes citadas, <strong>sem revisão clínica por médico-veterinário</strong>. Não substitui a consulta.</p>';
 }
 
-export function relatedHtml(ids, titulo = 'Leia também') {
+// hub: { path, label } — link final para o hub da seção (ex.: "Ver todos os guias").
+export function relatedHtml(ids, titulo = 'Leia também', hub) {
   if (!ids?.length) return '';
-  return `<nav class="related" aria-label="${titulo}"><h2>${titulo}</h2><ul>${ids.map(id => { const i = byId(id); return `<li><a href="${i.path}"><strong>${esc(i.name)}</strong><span>${esc(i.card || '')}</span></a></li>`; }).join('')}</ul></nav>`;
+  return `<nav class="related" aria-label="${titulo}"><h2>${titulo}</h2><ul>${ids.map(id => { const i = byId(id); return `<li><a href="${i.path}"><strong>${esc(i.name)}</strong><span>${esc(i.card || '')}</span></a></li>`; }).join('')}</ul>${hub ? `<p class="hub-more"><a href="${hub.path}">${hub.label}</a></p>` : ''}</nav>`;
 }
 
 // Página de ferramenta.
 export function toolPage(o) {
   const t = byId(o.id);
-  const main = `<section class="wrap tool-page"><div class="tool-layout"><div><p class="eyebrow"><span class="tool-badge" aria-hidden="true">${t.icon}</span> GRÁTIS • SEM CADASTRO</p><h1>${o.h1}</h1><p class="lead">${o.lead}</p>${o.intro || ''}</div>${o.form}</div></section><div class="wrap tool-content"><div class="reading-text">${o.sections.map(s => `<section><h2>${s.h2}</h2>${s.html}</section>`).join('')}${faqHtml(o.faqTitle, o.faq)}${relatedHtml(o.related, 'Guias e ferramentas relacionados')}${sourcesHtml(o.sourcesTitle || 'Fontes', o.sources, o.consulted, o.sourcesNote)}${byline(o)}${reviewNote(o)}</div></div>`;
+  const main = `<section class="wrap tool-page"><div class="tool-layout"><div><p class="eyebrow"><span class="tool-badge" aria-hidden="true">${t.icon}</span> GRÁTIS • SEM CADASTRO</p><h1>${o.h1}</h1><p class="lead">${o.lead}</p>${o.intro || ''}</div>${o.form}</div></section><div class="wrap tool-content"><div class="reading-text">${o.sections.map(s => `<section><h2>${s.h2}</h2>${s.html}</section>`).join('')}${faqHtml(o.faqTitle, o.faq)}${relatedHtml(o.related, 'Guias e ferramentas relacionados', { path: '/ferramentas/', label: 'Ver todas as ferramentas grátis para cães e gatos' })}${sourcesHtml(o.sourcesTitle || 'Fontes', o.sources, o.consulted, o.sourcesNote)}${byline(o)}${reviewNote(o)}</div></div>`;
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'WebApplication', name: t.name, url: SITE_URL + t.path,
     description: o.description, applicationCategory: 'UtilitiesApplication', operatingSystem: 'Qualquer navegador moderno',
@@ -47,7 +48,7 @@ export function toolPage(o) {
 // Página de guia.
 export function guidePage(o) {
   const g = byId(o.id);
-  const main = `<article class="reading wrap"><span class="eyebrow">${g.label}</span><h1>${o.h1}</h1><p class="lead">${o.lead}</p>${byline(o)}${img(g.photo, o.photoAlt, { lcp: true, cls: 'reading-photo', sizes: '(max-width: 1000px) 100vw, 900px' })}<div class="reading-text"><div class="quick-answer"><p class="quick-label">Resposta rápida</p>${o.quick}</div>${o.sections.map(s => `<section><h2>${s.h2}</h2>${s.html}</section>`).join('')}${faqHtml(o.faqTitle, o.faq)}${relatedHtml(o.related)}${sourcesHtml('Fontes', o.sources, o.consulted)}${reviewNote(o)}</div></article>`;
+  const main = `<article class="reading wrap"><span class="eyebrow">${g.label}</span><h1>${o.h1}</h1><p class="lead">${o.lead}</p>${byline(o)}${img(g.photo, o.photoAlt, { lcp: true, cls: 'reading-photo', sizes: '(max-width: 1000px) 100vw, 900px' })}<div class="reading-text"><div class="quick-answer"><p class="quick-label">Resposta rápida</p>${o.quick}</div>${o.sections.map(s => `<section><h2>${s.h2}</h2>${s.html}</section>`).join('')}${faqHtml(o.faqTitle, o.faq)}${relatedHtml(o.related, 'Leia também', { path: '/guias/', label: 'Ver todos os guias de cuidados com cães e gatos' })}${sourcesHtml('Fontes', o.sources, o.consulted)}${reviewNote(o)}</div></article>`;
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'Article', headline: o.h1.replace(/<[^>]+>/g, ''), description: o.description,
     image: [`${SITE_URL}/assets/og/${g.id}.jpg`, `${SITE_URL}/assets/img/${g.photo}-1200.webp`], inLanguage: 'pt-BR',
