@@ -25,6 +25,7 @@ export const MENU_GUIDES = GUIDES.filter(g => !g.extra);
 
 export const INSTITUTIONAL = [
   { id: 'sobre', path: '/sobre/', name: 'Sobre e fontes' },
+  { id: 'contato', path: '/contato/', name: 'Contato' },
   { id: 'privacidade', path: '/privacidade/', name: 'Privacidade' },
   { id: 'termos', path: '/termos/', name: 'Termos de uso' },
   { id: 'creditos', path: '/creditos/', name: 'Créditos das fotos' }

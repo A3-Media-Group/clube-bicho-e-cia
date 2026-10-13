@@ -37,6 +37,7 @@ async function build() {
     fs.mkdirSync(path.dirname(out), { recursive: true });
     fs.writeFileSync(out, render(page, assets));
     generated.add(pathToFile(page.path));
+    if (page.warn) warnings.push(page.warn);
     if (!fs.existsSync(path.join(ROOT, ogImagePath(page)))) warnings.push(`sem imagem de compartilhamento ${ogImagePath(page)} (rode npm run og)`);
   }
   const indexable = pages.filter(p => !p.noindex);

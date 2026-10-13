@@ -18,7 +18,7 @@ export function breadcrumb(items) {
 }
 
 export function toolCard(tool, n) {
-  return `<a class="tool-card ${tool.color}" href="${tool.path}"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="tool-number" aria-hidden="true">${String(n).padStart(2, '0')}</span><h3>${esc(tool.short)}</h3><p>${esc(tool.card)}</p><span class="card-link">Usar ferramenta <span aria-hidden="true">↗</span></span></a>`;
+  return `<a class="tool-card ${tool.color}" href="${tool.path}" data-evento="clicou_ferramenta" data-ferramenta="${tool.id}"><span class="tool-icon" aria-hidden="true">${tool.icon}</span><span class="tool-number" aria-hidden="true">${String(n).padStart(2, '0')}</span><h3>${esc(tool.short)}</h3><p>${esc(tool.card)}</p><span class="card-link">Usar ferramenta <span aria-hidden="true">↗</span></span></a>`;
 }
 
 export function guideCard(guide, { heading = 'h3' } = {}) {

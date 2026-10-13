@@ -23,6 +23,9 @@ Os HTMLs publicados são **gerados** por `build.mjs` e ficam commitados na raiz,
 Variáveis de ambiente do build:
 
 - `SITE_URL` — padrão `https://clubebichoecia.com.br` (sem barra final). Define canonical, og:url, og:image, sitemap, robots e os redirecionamentos do `.htaccess`.
+- `CONTATO_EMAIL` — e-mail exibido em `/contato/`. Se faltar, o build avisa e a página sai com `noindex` e sem e-mail. Ex.: `CONTATO_EMAIL=contato@exemplo.com.br npm run build`.
+
+Autoria e revisão ficam em `src/config.mjs` (`AUTOR`, `REVISOR`, `REVISADO_EM`). Preencha só com dados reais; vazio mantém "Redação Clube Bicho e Cia" e o aviso de que não há revisão clínica.
 
 ## Estrutura
 
@@ -77,6 +80,31 @@ Depois do deploy, envie `https://clubebichoecia.com.br/sitemap.xml` no Search Co
 ## Privacidade, anúncios e medição
 
 O site **não** usa rastreadores, cookies, analytics nem anúncios, e as ferramentas processam tudo no navegador. Ativar AdSense ou analytics exige conta própria, banner de consentimento e atualização da política de privacidade **antes** de publicar — nenhum ID foi criado neste repositório.
+
+### Eventos já marcados (para ligar o GA4 depois, com consentimento)
+
+Botões e links importantes têm o atributo `data-evento`, e as ferramentas disparam um evento local `clube:evento` no `document` (hoje ninguém o escuta e nada é enviado):
+
+| Evento | Onde |
+|---|---|
+| `ferramenta_calculou` | botão Calcular/Consultar/Filtrar de cada ferramenta (`data-ferramenta` = id) |
+| `ferramenta_copiou`, `ferramenta_imprimiu` | botões Copiar e Imprimir do resultado |
+| `guia_clicou_ferramenta` | links de um guia para uma ferramenta |
+| `clicou_ferramenta`, `clicou_relacionado`, `clicou_contato` | cards de ferramenta, blocos de relacionados e e-mail de contato |
+
+Para ligar o GA4 no futuro:
+
+1. Crie a propriedade GA4 e um banner de consentimento (Consent Mode v2) que só carregue o `gtag.js` depois do aceite.
+2. Atualize `/privacidade/` (src/pages/institucional/privacidade.mjs) descrevendo o GA4, cookies e a base legal, **antes** de publicar.
+3. Adicione ao layout (`src/layout.mjs`) o script do banner e, após o consentimento, um ouvinte:
+
+```js
+document.addEventListener('clube:evento', e => gtag('event', e.detail.evento, e.detail));
+document.addEventListener('click', e => {
+  const el = e.target.closest('a[data-evento]');
+  if (el) gtag('event', el.dataset.evento, { destino: el.getAttribute('href') });
+});
+```
 
 ## Conteúdo e fontes
 
