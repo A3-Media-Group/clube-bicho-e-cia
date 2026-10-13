@@ -15,7 +15,9 @@ Os HTMLs publicados são **gerados** por `build.mjs` e ficam commitados na raiz,
 |---|---|
 | `npm run build` | Gera HTMLs, `assets/style.<hash>.css`, `assets/js/*.<hash>.js`, `sitemap.xml`, `robots.txt`, `.htaccess` e `site.webmanifest`. |
 | `npm start` | Servidor local em http://127.0.0.1:4173 que imita a Hostinger (índice de pasta, 404 real, 301 das URLs antigas). |
-| `npm run audit` | Relatório por página: title, description, palavras, H1, links de entrada/saída, canonical, og:image. |
+| `npm test` | Build + testes: unitários das ferramentas (`tests/calc.test.mjs`) e do site gerado (`tests/site.test.mjs`: title/description, H1, canonical, sitemap, links internos, 301, JSON-LD, imagens, links de entrada, sem rastreadores). |
+| `npm run test:browser` | Validação no Chromium a 390 px: cada ferramenta com vazio, zero, vírgula, extremos, query string, copiar, impressão; 404 e 301; sem erros de console nem rolagem horizontal. Requer Playwright. |
+| `npm run audit` | Relatório por página: title, description, palavras, H1, links de entrada (total e no conteúdo), saída, canonical, og:image. `npm run audit:check` falha se alguma página tiver menos de 3 links de entrada. |
 | `npm run og` | Regenera as imagens de compartilhamento 1200×675 (`assets/og/<id>.jpg`) e roda o build. Rode depois de mudar títulos. |
 | `npm run icones` | Regenera favicon.ico e PNGs a partir de `favicon.svg`. |
 | `npm run imagens` | Regenera as fotos WebP 600/1200 px a partir de `src/img/*.jpg`. |
@@ -37,7 +39,15 @@ src/pages/*.mjs        dados de cada página (id, path, title, description, upda
 src/assets/style.css   CSS único (vira assets/style.<hash>.css)
 src/js/tools/*.js      um módulo por ferramenta, carregado só na sua página
 src/js/calc/*.mjs      lógica das ferramentas (testável em Node)
-src/js/lib/ui.js       utilidades de interface
+src/js/lib/ui.js       interface comum (validação, query string, copiar, imprimir, eventos)
+src/site.mjs           registro de ferramentas, guias, páginas “pode comer?” e listas de nomes
+src/templates.mjs      modelos de ferramenta, guia e “pode comer?” (seções obrigatórias)
+src/forms.mjs          formulários das ferramentas
+data/alimentos.mjs     base da consulta de alimentos (classificação, motivo, fonte)
+data/plantas.mjs       plantas tóxicas e não tóxicas (ficha da ASPCA)
+data/nomes.mjs         nomes sugeridos por estilo, sexo, espécie e porte
+tests/                 testes unitários, do site e de navegador
+docs/                  auditorias antes/depois
 src/redirects.mjs      URLs antigas → novas (301)
 src/htaccess.mjs       modelo do .htaccess
 src/img/               fotos originais (fonte das versões WebP)
@@ -106,6 +116,17 @@ document.addEventListener('click', e => {
 });
 ```
 
-## Conteúdo e fontes
+## Regras editoriais
 
-Conteúdo educativo, sem revisão clínica por médico-veterinário (até que um revisor seja indicado). Toda constante clínica usada pelas ferramentas precisa de fonte oficial citada com a página exata. Fotos: licença Pexels (ver `/creditos.html`).
+- Conteúdo educativo, sem revisão clínica por médico-veterinário até que um revisor real seja cadastrado em `src/config.mjs`.
+- Toda constante clínica (fatores de energia, tabelas de idade, toxicidade) precisa de fonte oficial citada com a página exata. Sem fonte confiável, o valor não é publicado.
+- Linguagem conservadora: sem doses, sem protocolo vacinal, sem limiar de dose tóxica, sem induzir vômito sem orientação; sempre “procure um médico-veterinário”.
+- Páginas novas (ex.: “pode comer?”) são escritas uma a uma; não gere páginas em massa a partir de modelo.
+- Datas `updated` mudam só quando o conteúdo muda.
+- Fotos: licença Pexels (ver `/creditos/`).
+
+## Adicionar uma página
+
+1. Ferramenta, guia ou “pode comer?”: registre em `src/site.mjs` (id, path, nome, card) e crie o arquivo em `src/pages/...` usando `toolPage`, `guidePage` ou `foodPage` de `src/templates.mjs`.
+2. Defina `related` (3–5 itens) e inclua 2–3 links no texto.
+3. `npm run og` (imagem de compartilhamento), `npm test` e `npm run audit:check`.

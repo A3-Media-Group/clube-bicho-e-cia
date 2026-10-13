@@ -8,7 +8,7 @@ import { REDIRECTS } from '../src/redirects.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.webmanifest': 'application/manifest+json', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
-const blocked = /^\/(src|scripts|tests|docs|data|node_modules)(\/|$)|^\/(build\.mjs|package(-lock)?\.json|README\.md)$|(^|\/)\./;
+const blocked = /^\/(src|scripts|tests|docs|data|node_modules)(\/|$)|^\/(build\.mjs|package(-lock)?\.json|README\.md)$|(^|\/)\.(?!well-known\/)/;
 
 export function createServer() {
   return http.createServer((req, res) => {

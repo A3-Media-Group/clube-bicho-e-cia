@@ -20,7 +20,8 @@ RewriteEngine On
 # Arquivos de desenvolvimento não são públicos.
 RewriteRule ^(src|scripts|tests|docs|data|node_modules)(/|$) - [R=404,L]
 RewriteRule ^(build\\.mjs|package(-lock)?\\.json|README\\.md|LEIA-ME\\.md)$ - [R=404,L]
-RewriteRule (^|/)\\. - [R=404,L]
+# Arquivos ocultos (ex.: .git), exceto .well-known (validação do certificado SSL).
+RewriteRule (^|/)\\.(?!well-known/) - [R=404,L]
 
 # URLs antigas → novas (301 direto para https sem www, sem cadeia).
 ${redirects || '# (nenhuma)'}
