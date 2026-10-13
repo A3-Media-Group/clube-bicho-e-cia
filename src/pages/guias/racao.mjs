@@ -38,5 +38,5 @@ export default guidePage({
     { nome: 'AAHA — Weight Reduction in the Obese Pet (2021 Guidelines)', url: 'https://www.aaha.org/resources/2021-aaha-nutrition-and-weight-management-guidelines/weight-reduction-in-the-obese-pet/', nota: 'fatores de manutenção e exemplo resolvido' },
     { nome: 'WSAVA — Global Nutrition Guidelines', url: 'https://wsava.org/global-guidelines/global-nutrition-guidelines/', nota: 'avaliação nutricional e condição corporal' }
   ],
-  related: ['racao', 'guia-peso', 'guia-alimentos', 'gastos']
+  related: ['racao', 'condicao', 'guia-peso', 'guia-alimentos']
 });

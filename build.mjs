@@ -16,7 +16,7 @@ export async function loadPages() {
   const pages = [];
   for (const f of fs.readdirSync(dir, { recursive: true }).filter(f => f.endsWith('.mjs')).sort()) {
     const { default: page } = await import(pathToFileURL(path.join(dir, f)));
-    pages.push(page);
+    pages.push(...[].concat(page));
   }
   return pages.sort((a, b) => (a.path === '/' ? -1 : b.path === '/' ? 1 : a.path.localeCompare(b.path)));
 }

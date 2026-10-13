@@ -1,4 +1,4 @@
-import { setupTool, download } from './lib-ui.25ebddae.js';
+import { setupTool, download } from './lib-ui.6f3aaac2.js';
 import { buildIcs } from './calc-agenda.77718982.js';
 
 // O título do lembrete não vai para a URL: pode conter dados pessoais.

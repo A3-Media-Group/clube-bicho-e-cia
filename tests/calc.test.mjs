@@ -148,3 +148,26 @@ test('nomes: filtros e sorteio', () => {
   let seed = 1; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   assert.equal(pickNames(machos, 6, rnd).length, 6);
 });
+
+import { avaliar, PERGUNTAS } from '../src/js/calc/condicao.mjs';
+test('condição corporal: classificação e respostas faltando', () => {
+  assert.equal(avaliar({ costelas: '0', cintura: '0', barriga: '0' }).resultado, 'ideal');
+  assert.equal(avaliar({ costelas: '1', cintura: '1', barriga: '0' }).resultado, 'acima');
+  assert.equal(avaliar({ costelas: '-1', cintura: '-1', barriga: '-1' }).resultado, 'abaixo');
+  assert.equal(avaliar({ costelas: '1', cintura: '0', barriga: '0' }).resultado, 'limite-acima');
+  assert.equal(avaliar({ costelas: '-1', cintura: '1', barriga: '0' }).resultado, 'misto');
+  assert.throws(() => avaliar({ costelas: '0', cintura: '0' }), InputError);
+  assert.throws(() => avaliar({ costelas: '5', cintura: '0', barriga: '0' }), InputError);
+  assert.equal(PERGUNTAS.length, 3);
+});
+
+import { primeiroAno } from '../src/js/calc/primeiro-ano.mjs';
+test('primeiro ano: únicos + mensais × 12 + anuais', () => {
+  const r = primeiroAno({ enxoval: 500, castracao: 800, vacinas: 300, racao: 150 });
+  assert.equal(r.unicos, 1300);
+  assert.equal(r.recorrentes, 300 + 1800);
+  assert.equal(r.total, 3400);
+  assert.equal(r.mediaMensal, 3400 / 12);
+  assert.throws(() => primeiroAno({ racao: -10 }), InputError);
+  assert.equal(primeiroAno({}).total, 0);
+});

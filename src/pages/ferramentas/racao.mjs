@@ -33,5 +33,5 @@ export default toolPage({
     { nome: 'AAHA — 2021 AAHA Nutrition and Weight Management Guidelines for Dogs and Cats (PDF)', url: 'https://www.aaha.org/wp-content/uploads/globalassets/02-guidelines/2021-nutrition-and-weight-management/resourcepdfs/new-2021-aaha-nutrition-and-weight-management-guidelines-with-ref.pdf', nota: 'Box 1, “Calculating energy requirements”: RER e fatores de manutenção' },
     { nome: 'AAHA — 2021 Nutrition and Weight Management Guidelines: Weight Reduction in the Obese Pet', url: 'https://www.aaha.org/resources/2021-aaha-nutrition-and-weight-management-guidelines/weight-reduction-in-the-obese-pet/', nota: 'página que reproduz o Box 1 e o exemplo com fator 1,4' }
   ],
-  related: ['guia-racao', 'guia-peso', 'alimentos']
+  related: ['guia-racao', 'condicao', 'guia-peso', 'alimentos']
 });

@@ -1,4 +1,4 @@
-import { setupTool, el } from './lib-ui.25ebddae.js';
+import { setupTool, el } from './lib-ui.6f3aaac2.js';
 import { searchFoods, foodSources, CATEGORIAS } from './calc-alimentos.390ea058.js';
 import { NOTA_GATOS } from './data-alimentos.9213b106.js';
 

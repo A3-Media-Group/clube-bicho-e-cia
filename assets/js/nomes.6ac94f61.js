@@ -1,4 +1,4 @@
-import { setupTool } from './lib-ui.25ebddae.js';
+import { setupTool } from './lib-ui.6f3aaac2.js';
 import { filterNames, pickNames } from './calc-nomes.2eeca11e.js';
 
 const form = document.querySelector('form[data-tool="nomes"]');

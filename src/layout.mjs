@@ -1,16 +1,16 @@
 // Layout único: head, topbar, header (menu), breadcrumb e footer comuns a todas as páginas.
 import { SITE_URL, SITE_NAME, THEME_COLOR } from './config.mjs';
 import { esc } from './html.mjs';
-import { TOOLS, GUIDES, INSTITUTIONAL, HUBS } from './site.mjs';
+import { TOOLS, GUIDES, MENU_TOOLS, MENU_GUIDES, INSTITUTIONAL, HUBS } from './site.mjs';
 import { breadcrumb } from './components.mjs';
 
 const menu = (label, all, hub, items) => `<details class="menu"><summary>${label}</summary><ul><li><a href="${hub.path}">${all}</a></li>${items.map(i => `<li><a href="${i.path}">${esc(i.short)}</a></li>`).join('')}</ul></details>`;
 
-const header = `<a class="skip" href="#conteudo">Pular para o conteúdo</a><div class="topbar">Um clube para quem ama, cuida e aprende. <span>100% gratuito • Sem cadastro</span></div><header class="header"><a class="brand" href="/" aria-label="Clube Bicho e Cia — início"><span class="brandmark" aria-hidden="true">✦</span><span>clube <b>bicho</b><small>& cia.</small></span></a><nav class="mainnav" aria-label="Navegação principal">${menu('Ferramentas', 'Todas as ferramentas', HUBS.ferramentas, TOOLS)}${menu('Guias', 'Todos os guias', HUBS.guias, GUIDES)}<a href="/sobre/">Sobre</a></nav><a class="pill" href="/ferramentas/">Cuidar melhor ↗</a></header>`;
+const header = `<a class="skip" href="#conteudo">Pular para o conteúdo</a><div class="topbar">Um clube para quem ama, cuida e aprende. <span>100% gratuito • Sem cadastro</span></div><header class="header"><a class="brand" href="/" aria-label="Clube Bicho e Cia — início"><span class="brandmark" aria-hidden="true">✦</span><span>clube <b>bicho</b><small>& cia.</small></span></a><nav class="mainnav" aria-label="Navegação principal">${menu('Ferramentas', 'Todas as ferramentas', HUBS.ferramentas, MENU_TOOLS)}${menu('Guias', 'Todos os guias', HUBS.guias, MENU_GUIDES)}<a href="/sobre/">Sobre</a></nav><a class="pill" href="/ferramentas/">Cuidar melhor ↗</a></header>`;
 
 const col = (title, items) => `<div class="footer-col"><p class="footer-title">${title}</p><ul>${items.map(i => `<li><a href="${i.path}">${esc(i.name)}</a></li>`).join('')}</ul></div>`;
 
-const footer = `<footer><div class="footer-inner"><div class="footer-brand"><a class="brand" href="/">clube <b>bicho</b> & cia.</a><p>Mais informação. Mais carinho.<br>Mais vida boa ao lado do seu pet.</p></div>${col('Ferramentas', [HUBS.ferramentas, ...TOOLS])}${col('Guias', [HUBS.guias, ...GUIDES])}${col('O clube', INSTITUTIONAL)}</div><div class="fine">© 2026 Clube Bicho e Cia. Conteúdo educativo; não substitui atendimento veterinário.</div></footer>`;
+const footer = `<footer><div class="footer-inner"><div class="footer-brand"><a class="brand" href="/">clube <b>bicho</b> & cia.</a><p>Mais informação. Mais carinho.<br>Mais vida boa ao lado do seu pet.</p></div>${col('Ferramentas', [HUBS.ferramentas, ...TOOLS])}${col('Guias', [HUBS.guias, ...GUIDES, { path: HUBS.podeComer.path, name: 'Cachorro e gato podem comer?' }])}${col('O clube', INSTITUTIONAL)}</div><div class="fine">© 2026 Clube Bicho e Cia. Conteúdo educativo; não substitui atendimento veterinário.</div></footer>`;
 
 export const absUrl = p => SITE_URL + p;
 export const ogImagePath = page => `/assets/og/${page.id}.jpg`;

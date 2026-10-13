@@ -64,3 +64,27 @@ export function guidePage(o) {
     updated: o.updated, published: o.published, jsonLd, main
   };
 }
+
+// Página "pode comer?". verdict: perigoso | cuidado | seguro.
+const VEREDITO = { perigoso: ['Não ofereça', 'verdict-perigoso'], cuidado: ['Com cuidado', 'verdict-cuidado'], seguro: ['Pode, com preparo', 'verdict-seguro'] };
+export function foodPage(o) {
+  const f = byId(o.id);
+  const [vLabel, vClass] = VEREDITO[o.verdict];
+  const main = `<article class="reading wrap"><span class="eyebrow">PODE COMER?</span><h1>${o.h1 || f.name}</h1><p class="verdict ${vClass}">${vLabel}</p>${byline(o)}<div class="reading-text"><div class="quick-answer"><p class="quick-label">Resposta rápida</p>${o.quick}</div>${o.sections.map(s => `<section><h2>${s.h2}</h2>${s.html}</section>`).join('')}${faqHtml(o.faqTitle, o.faq)}${relatedHtml(o.related, 'Leia também', { path: '/pode-comer/', label: 'Ver todas as perguntas “pode comer?”' })}${sourcesHtml('Fontes', o.sources, o.consulted)}${reviewNote(o)}</div></article>`;
+  const jsonLd = {
+    '@context': 'https://schema.org', '@type': 'Article', headline: f.name, description: o.description, inLanguage: 'pt-BR',
+    image: [`${SITE_URL}/assets/og/${f.id}.jpg`], datePublished: o.published || o.updated, dateModified: o.updated,
+    author: { '@type': 'Organization', name: 'Redação Clube Bicho e Cia', url: SITE_URL + '/sobre/' },
+    publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL + '/', logo: { '@type': 'ImageObject', url: SITE_URL + '/icon-512.png' } },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': SITE_URL + f.path }
+  };
+  return {
+    id: f.id, path: f.path, crumbs: [{ name: 'Pode comer?', path: '/pode-comer/' }, { name: f.name }],
+    title: o.title, description: o.description, ogTitle: f.name, ogType: 'article', ogLabel: `PODE COMER? • ${vLabel.toUpperCase()}`, ogPhoto: o.photo || (f.id.includes('gato') ? 'cat' : 'dog'),
+    updated: o.updated, published: o.published || o.updated, jsonLd, main
+  };
+}
+
+// Lista de links para todas as respostas "pode comer?" (usada na consulta e no guia de alimentos).
+import { FOOD_PAGES } from './site.mjs';
+export const foodQuestionsHtml = () => `<ul class="food-q-list">${FOOD_PAGES.map(f => `<li><a href="${f.path}"><strong>${esc(f.name)}</strong><span>${esc(f.card)}</span></a></li>`).join('')}</ul>`;

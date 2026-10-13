@@ -1,6 +1,6 @@
 // Ferramenta: nomes para cachorro e gato.
 import { toolPage } from '../../templates.mjs';
-import { byId } from '../../site.mjs';
+import { byId, NAME_LISTS } from '../../site.mjs';
 import { FORMS } from '../../forms.mjs';
 import { filterNames, ESTILOS } from '../../js/calc/nomes.mjs';
 
@@ -14,6 +14,7 @@ export default toolPage({
   description: `Gerador de nomes para cachorro e gato com ${total} sugestões: escolha espécie, macho ou fêmea, estilo e porte e sorteie ideias para o seu pet.`,
   h1: 'Nomes para cachorro e gato: gerador de ideias',
   lead: 'Escolha espécie, sexo, estilo e porte e sorteie seis sugestões por vez.',
+  intro: `<p>Prefere ver todos de uma vez? Confira as listas completas de ${NAME_LISTS.map(l => `<a href="${l.path}">${l.name.toLowerCase()}</a>`).join(', ').replace(/, ([^,]*)$/, ' e $1')}.</p>`,
   form: FORMS.nomes,
   sections: [
     { h2: 'Como o gerador escolhe os nomes', html: `<p>Os ${total} nomes foram selecionados pela redação e marcados por espécie, sexo, estilo (${Object.values(ESTILOS).map(e => e.toLowerCase()).join(', ')}) e, em alguns casos, porte do cão. O gerador filtra a lista com as opções escolhidas e sorteia seis nomes; cada clique sorteia de novo.</p><p>Não é um ranking de popularidade: não temos dados de registro de nomes de pets no Brasil.</p>` },

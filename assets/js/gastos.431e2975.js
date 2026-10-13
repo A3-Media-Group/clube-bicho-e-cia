@@ -1,4 +1,4 @@
-import { setupTool, money } from './lib-ui.25ebddae.js';
+import { setupTool, money } from './lib-ui.6f3aaac2.js';
 import { parseDecimal, InputError } from './calc-numero.2b563488.js';
 import { budget, CATEGORIES } from './calc-gastos.a414ce78.js';
 

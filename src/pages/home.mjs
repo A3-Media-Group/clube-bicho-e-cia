@@ -1,6 +1,6 @@
 // Página inicial: vitrine de ferramentas e guias.
 import { img } from '../html.mjs';
-import { TOOLS, GUIDES } from '../site.mjs';
+import { MENU_TOOLS as TOOLS, MENU_GUIDES as GUIDES } from '../site.mjs';
 import { toolCard, guideCard } from '../components.mjs';
 import { SITE_URL, SITE_NAME } from '../config.mjs';
 

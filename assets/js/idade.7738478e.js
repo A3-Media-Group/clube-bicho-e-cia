@@ -1,4 +1,4 @@
-import { setupTool, fmt } from './lib-ui.25ebddae.js';
+import { setupTool, fmt } from './lib-ui.6f3aaac2.js';
 import { parseInteger, InputError } from './calc-numero.2b563488.js';
 import { ageEquivalent } from './calc-idade.dc9949a7.js';
 

@@ -1,4 +1,4 @@
-import { setupTool, fmt } from './lib-ui.25ebddae.js';
+import { setupTool, fmt } from './lib-ui.6f3aaac2.js';
 import { parseDecimal } from './calc-numero.2b563488.js';
 import { dailyPortion } from './calc-racao.d1944567.js';
 

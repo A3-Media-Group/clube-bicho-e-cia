@@ -87,6 +87,7 @@ export function setupTool({ tool, compute, urlFields, autorun = true, onResult }
   for (const f of fields) {
     if (!params.has(f.name)) continue;
     const v = params.get(f.name).slice(0, 100);
+    if (f.type === 'radio' || f.type === 'checkbox') { f.checked = f.value === v; if (f.checked) restored = true; continue; }
     if (f.tagName === 'SELECT' && ![...f.options].some(o => o.value === v)) continue;
     f.value = v;
     restored = true;
@@ -100,7 +101,10 @@ export function setupTool({ tool, compute, urlFields, autorun = true, onResult }
       renderResult(result, out, tool);
       if (updateUrl) {
         const q = new URLSearchParams();
-        for (const f of fields) if (String(f.value).trim() !== '') q.set(f.name, String(f.value).trim());
+        for (const f of fields) {
+          if ((f.type === 'radio' || f.type === 'checkbox') && !f.checked) continue;
+          if (String(f.value).trim() !== '') q.set(f.name, String(f.value).trim());
+        }
         history.replaceState(null, '', q.toString() ? `?${q}` : location.pathname);
       }
       onResult?.(out);
@@ -108,8 +112,9 @@ export function setupTool({ tool, compute, urlFields, autorun = true, onResult }
     } catch (error) {
       if (error?.name === 'InputError') {
         renderError(result, error.message);
-        const field = error.field && form.elements[error.field];
-        if (field) { field.setAttribute('aria-invalid', 'true'); if (updateUrl) field.focus(); }
+        let field = error.field && form.elements[error.field];
+        if (field instanceof RadioNodeList) field = field[0]?.closest('fieldset') || field[0];
+        if (field) { field.setAttribute('aria-invalid', 'true'); if (updateUrl) (field.querySelector?.('input') || field).focus(); }
       } else {
         renderError(result, 'Não foi possível calcular agora. Confira os campos e tente de novo.');
         console.error(error);
