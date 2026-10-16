@@ -1,0 +1,20 @@
+# Clube Bicho e Cia — Hostinger (Apache/LiteSpeed)
+# Domínio canônico: https://clubebichoecia.com.br (https, sem www)
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# 1) Qualquer .../index.html → .../ no host canônico, em um único 301
+#    (vale também para http:// e www, sem cadeia de redirecionamentos).
+#    THE_REQUEST evita laço com o DirectoryIndex interno.
+RewriteCond %{THE_REQUEST} \s/+((?:[^?\s]*/)?)index\.html[?\s] [NC]
+RewriteRule ^ https://clubebichoecia.com.br/%1 [R=301,L]
+
+# 2) http → https e www → sem www, em um único 301.
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^clubebichoecia\.com\.br$ [NC]
+RewriteRule ^ https://clubebichoecia.com.br%{REQUEST_URI} [R=301,L]
+</IfModule>
