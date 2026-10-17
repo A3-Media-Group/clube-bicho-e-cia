@@ -7,6 +7,11 @@ ErrorDocument 404 /404.html
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
+# 0) Arquivos ocultos (.git, .htaccess…) e de desenvolvimento não são públicos: 404.
+#    .well-known continua acessível (validação do certificado SSL).
+RewriteRule (^|/)\.(?!well-known(/|$)) - [R=404,L]
+RewriteRule ^(preparar-seo\.cjs|LEIA-ME\.md|README\.md)$ - [R=404,L,NC]
+
 # 1) Qualquer .../index.html → .../ no host canônico, em um único 301
 #    (vale também para http:// e www, sem cadeia de redirecionamentos).
 #    THE_REQUEST evita laço com o DirectoryIndex interno.
@@ -14,6 +19,8 @@ RewriteCond %{THE_REQUEST} \s/+((?:[^?\s]*/)?)index\.html[?\s] [NC]
 RewriteRule ^ https://clubebichoecia.com.br/%1 [R=301,L]
 
 # 2) http → https e www → sem www, em um único 301.
+#    Só na requisição original (não na página de erro interna do ErrorDocument).
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} !^clubebichoecia\.com\.br$ [NC]
 RewriteRule ^ https://clubebichoecia.com.br%{REQUEST_URI} [R=301,L]
